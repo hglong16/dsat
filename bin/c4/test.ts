@@ -1,4 +1,4 @@
-import { Stack } from "../../libs/stack";
+import { Stack } from "@/libs/stack";
 
 const main = () => {
   const stack = new Stack<number>();
