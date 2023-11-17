@@ -1,4 +1,4 @@
-import { NodeLinkedList } from "../../libs/linked_list";
+import { NodeLinkedList } from "../../libs/linked_list/linked_list";
 
 const node = new NodeLinkedList<number>(1, null);
 

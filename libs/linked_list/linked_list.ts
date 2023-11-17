@@ -1,3 +1,5 @@
+import { ILinkedList } from "@/types/linked_list";
+
 /**
  * Node of a linked list
  *
@@ -117,6 +119,10 @@ class LinkedList<T> {
     return value;
   }
 
+  /**
+   * remove the last node
+   * @returns {T | null} - Value of the last node
+   */
   removeLast(): T | null {
     if (this.head?.next === null) {
       return this.pop();
@@ -134,12 +140,81 @@ class LinkedList<T> {
     return value;
   }
 
+  /**
+   * Remove a node after a node
+   * @param node node to remove after
+   * @returns node removed
+   */
+  removeAfter(node: NodeLinkedList<T>): T | null {
+    const value = node.next?.value ?? null;
+    node.next = node.next?.next ?? null;
+
+    return value;
+  }
   toString(): string {
     if (this.head) {
       return this.head.toString();
     }
 
     return "Empty List";
+  }
+
+  /**
+   * Reverse the linked list
+   */
+  reverse(): void {
+    this.tail = this.head;
+
+    let previous = this.head;
+    let current = this.head?.next;
+
+    previous!.next = null;
+
+    while (current) {
+      const next = current.next;
+      current.next = previous;
+      previous = current;
+      current = next;
+    }
+
+    this.head = previous;
+  }
+
+  removeAll(value: T): void {
+    if (this.head!.value == value) this.pop();
+
+    let current = this.head;
+
+    while (current != this.tail && current!.next != null) {
+      if (current!.next!.value == value) {
+        this.removeAfter(current!);
+        continue;
+      }
+      current = current!.next;
+    }
+  }
+
+  [Symbol.iterator](): Iterator<T> {
+    let currentNode = this.head;
+
+    return {
+      next(): IteratorResult<T> {
+        if (currentNode) {
+          const value = currentNode.value;
+          currentNode = currentNode.next;
+
+          return {
+            done: false,
+            value,
+          };
+        }
+
+        return {
+          done: true,
+          value: null,
+        };
+      },
+    };
   }
 }
 
