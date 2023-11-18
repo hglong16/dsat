@@ -1,18 +1,16 @@
-import { ILinkedList } from "@/types/linked_list";
-
 /**
  * Node of a linked list
  *
  * @param {T} value - Value of the node
- * @param {NodeLinkedList<T> | null} next - Next node
+ * @param {NodeLinkedList<T> | undefined} next - Next node
  *
  * @returns {NodeLinkedList<T>} - Node of a linked list
  */
 class NodeLinkedList<T> {
 	value: T;
-	next: NodeLinkedList<T> | null;
+	next: NodeLinkedList<T> | undefined;
 
-	constructor(value: T, next: NodeLinkedList<T> | null) {
+	constructor(value: T, next: NodeLinkedList<T> | undefined) {
 		this.value = value;
 		this.next = next;
 	}
@@ -27,19 +25,19 @@ class NodeLinkedList<T> {
 }
 
 class LinkedList<T> {
-	head: NodeLinkedList<T> | null;
-	tail: NodeLinkedList<T> | null;
+	head: NodeLinkedList<T> | undefined;
+	tail: NodeLinkedList<T> | undefined;
 
 	constructor() {
-		this.head = null;
-		this.tail = null;
+		this.head = undefined;
+		this.tail = undefined;
 	}
 
 	/**
 	 * @returns {boolean} - True if the linked list is empty, false otherwise
 	 */
 	get isEmpty(): boolean {
-		return this.head === null;
+		return this.head === undefined;
 	}
 
 	/**
@@ -47,7 +45,7 @@ class LinkedList<T> {
 	 * @param index - Index of the node to return
 	 * @returns node at index
 	 */
-	indexAt(index: number): NodeLinkedList<T> | null {
+	indexAt(index: number): NodeLinkedList<T> | undefined {
 		let currentNode = this.head;
 		let currentIndex = 0;
 
@@ -78,13 +76,13 @@ class LinkedList<T> {
 	 * @returns {void}
 	 */
 	append(value: T): void {
-		if (this.isEmpty) {
+		if (!this.head || !this.tail) {
 			this.push(value);
 			return;
 		}
 
-		this.tail!.next = new NodeLinkedList(value, null);
-		this.tail = this.tail!.next;
+		this.tail.next = new NodeLinkedList(value, undefined);
+		this.tail = this.tail?.next;
 	}
 
 	/**
@@ -96,24 +94,24 @@ class LinkedList<T> {
 	insertAfter(node: NodeLinkedList<T>, value: T): NodeLinkedList<T> {
 		if (node === this.tail) {
 			this.append(value);
-			return this.tail!;
+			return this.tail;
 		}
 
-		node!.next = new NodeLinkedList(value, node!.next);
-		return node!.next;
+		node.next = new NodeLinkedList(value, node.next);
+		return node.next;
 	}
 
 	/**
 	 * Pop the head node
-	 * @returns {T | null} - Value of the head node
+	 * @returns {T | undefined} - Value of the head node
 	 */
-	pop(): T | null {
-		const value = this.head?.value ?? null;
+	pop(): T | undefined {
+		const value = this.head?.value ?? undefined;
 
-		this.head = this.head?.next ?? null;
+		this.head = this.head?.next ?? undefined;
 
 		if (this.isEmpty) {
-			this.tail = null;
+			this.tail = undefined;
 		}
 
 		return value;
@@ -121,21 +119,21 @@ class LinkedList<T> {
 
 	/**
 	 * remove the last node
-	 * @returns {T | null} - Value of the last node
+	 * @returns {T | undefined} - Value of the last node
 	 */
-	removeLast(): T | null {
-		if (this.head?.next === null) {
+	removeLast(): T | undefined {
+		if (this.head?.next === undefined) {
 			return this.pop();
 		}
 
 		let currentNode = this.head;
-		while (currentNode!.next != this.tail) {
-			currentNode = currentNode!.next;
+		while (currentNode.next !== this.tail) {
+			currentNode = currentNode.next as NodeLinkedList<T>;
 		}
 
-		const value = this.tail?.value ?? null;
+		const value = this.tail?.value ?? undefined;
 		this.tail = currentNode;
-		currentNode!.next = null;
+		currentNode.next = undefined;
 
 		return value;
 	}
@@ -145,9 +143,9 @@ class LinkedList<T> {
 	 * @param node node to remove after
 	 * @returns node removed
 	 */
-	removeAfter(node: NodeLinkedList<T>): T | null {
-		const value = node.next?.value ?? null;
-		node.next = node.next?.next ?? null;
+	removeAfter(node: NodeLinkedList<T>): T | undefined {
+		const value = node.next?.value ?? undefined;
+		node.next = node.next?.next ?? undefined;
 
 		return value;
 	}
@@ -163,12 +161,14 @@ class LinkedList<T> {
 	 * Reverse the linked list
 	 */
 	reverse(): void {
+		if (!this.head || !this.tail) return;
+
 		this.tail = this.head;
 
 		let previous = this.head;
 		let current = this.head?.next;
 
-		previous!.next = null;
+		previous.next = undefined;
 
 		while (current) {
 			const next = current.next;
@@ -181,16 +181,17 @@ class LinkedList<T> {
 	}
 
 	removeAll(value: T): void {
-		if (this.head!.value == value) this.pop();
+		if (!this.head) return;
+		if (this.head.value === value) this.pop();
 
 		let current = this.head;
 
-		while (current != this.tail && current!.next != null) {
-			if (current!.next!.value == value) {
-				this.removeAfter(current!);
+		while (current !== this.tail && current.next !== undefined) {
+			if (current.next.value === value) {
+				this.removeAfter(current);
 				continue;
 			}
-			current = current!.next;
+			current = current.next;
 		}
 	}
 
@@ -211,7 +212,7 @@ class LinkedList<T> {
 
 				return {
 					done: true,
-					value: null,
+					value: undefined,
 				};
 			},
 		};

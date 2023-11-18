@@ -10,7 +10,7 @@ linkedList.append(10);
 const first_way = <T>(lst: LinkedList<T>) => {
 	const _values = [];
 
-	for (let value of linkedList) {
+	for (const value of linkedList) {
 		_values.push(value);
 	}
 	console.log(linkedList.toString());

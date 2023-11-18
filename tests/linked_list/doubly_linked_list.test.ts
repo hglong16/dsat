@@ -1,4 +1,4 @@
-import { describe, test, expect } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import { DoublyLinkedList } from "@/libs/linked_list/doubly_linked_list";
 
 const createDoublyLinkedList = () => {
@@ -56,8 +56,8 @@ describe("DoublyLinkedList Test", () => {
 
 	test("Iterator", () => {
 		const dll = createDoublyLinkedList();
-		let s = [];
-		for (let i of dll) {
+		const s = [];
+		for (const i of dll) {
 			s.push(i);
 		}
 

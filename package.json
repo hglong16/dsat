@@ -11,6 +11,9 @@
     "typescript": "^5.0.0"
   },
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint": "biome lint .",
+    "format": "biome format . --write",
+    "lint:fix": "biome check --apply ."
   }
 }

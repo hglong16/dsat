@@ -1,4 +1,4 @@
-import { expect, test, describe } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import { LinkedList } from "@/libs/linked_list/linked_list";
 import { createLinkedList } from "@/libs/utils/linked_list";
 
@@ -21,7 +21,7 @@ describe("linked list test", () => {
 		const node = linkedList.indexAt(1);
 		expect(node?.value).toBe(6);
 
-		linkedList.insertAfter(node!, 7);
+		if (node) linkedList.insertAfter(node, 7);
 
 		expect(linkedList.toString()).toBe("5 -> 6 -> 7 -> 8");
 	});
@@ -44,7 +44,8 @@ describe("linked list test", () => {
 		const linkedList = createLinkedList();
 
 		const node = linkedList.indexAt(0);
-		linkedList.removeAfter(node!);
+
+		if (node) linkedList.removeAfter(node);
 
 		expect(linkedList.toString()).toBe("5 -> 7");
 	});
@@ -54,7 +55,7 @@ describe("linked list test", () => {
 		const linkedList = createLinkedList();
 
 		const values = [];
-		for (let value of linkedList) {
+		for (const value of linkedList) {
 			values.push(value);
 		}
 
