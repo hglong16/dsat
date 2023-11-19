@@ -1,21 +1,21 @@
 import { RingBufferFullError } from "./exceptions";
 
 class RingBuffer<T> {
-	private _list: Array<T | undefined>;
-	private _size = 0;
-	private _writeIndex = 0;
-	private _readIndex = 0;
+	#list: Array<T | undefined>;
+	#size = 0;
+	#writeIndex = 0;
+	#readIndex = 0;
 
 	constructor(size: number) {
-		this._list = new Array(size);
+		this.#list = new Array(size);
 	}
 
 	get isEmpty(): boolean {
-		return this._size === 0;
+		return this.#size === 0;
 	}
 
 	get isFull(): boolean {
-		return this._size === this._list.length;
+		return this.#size === this.#list.length;
 	}
 
 	write(element: T): void {
@@ -23,33 +23,33 @@ class RingBuffer<T> {
 			throw new RingBufferFullError();
 		}
 
-		this._list[this._writeIndex] = element;
-		this._writeIndex = this._advance(this._writeIndex);
-		this._size++;
+		this.#list[this.#writeIndex] = element;
+		this.#writeIndex = this.#advance(this.#writeIndex);
+		this.#size++;
 	}
 
 	read(): T | undefined {
 		if (this.isEmpty) return undefined;
 
-		const element = this._list[this._readIndex];
-		this._readIndex = this._advance(this._readIndex);
-		this._size--;
+		const element = this.#list[this.#readIndex];
+		this.#readIndex = this.#advance(this.#readIndex);
+		this.#size--;
 		return element;
 	}
 
-	private _advance(index: number) {
-		return (index + 1) % this._list.length;
+	#advance(index: number) {
+		return (index + 1) % this.#list.length;
 	}
 
 	toString(): string {
 		let s = "[";
-		for (let i = 0; i < this._list.length; i++) {
-			if (this._list[i] === undefined) {
+		for (let i = 0; i < this.#list.length; i++) {
+			if (this.#list[i] === undefined) {
 				s += "empty";
 			} else {
-				s += this._list[i];
+				s += this.#list[i];
 			}
-			if (i < this._list.length - 1) {
+			if (i < this.#list.length - 1) {
 				s += ", ";
 			}
 		}
