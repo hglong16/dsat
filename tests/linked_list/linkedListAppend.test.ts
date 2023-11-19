@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { LinkedList } from "@/libs/linked_list/linked_list";
-import { createLinkedList } from "@/libs/utils/linked_list";
+import { LinkedList } from "@/libs/linkedList/linkedList";
+import { createLinkedList } from "@/libs/utils/linkedList";
 
 describe("linked list test", () => {
 	test("linked_list: append", () => {

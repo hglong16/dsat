@@ -1,4 +1,4 @@
-import { LinkedList } from "@/libs/linked_list/linked_list";
+import { LinkedList } from "@/libs/linkedList/linkedList";
 
 const createLinkedList = (): LinkedList<number> => {
 	const linkedList = new LinkedList<number>();

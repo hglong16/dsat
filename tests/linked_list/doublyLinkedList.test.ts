@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { DoublyLinkedList } from "@/libs/linked_list/doubly_linked_list";
+import { DoublyLinkedList } from "@/libs/linkedList/doublyLinkedList";
 
 const createDoublyLinkedList = () => {
 	const dll = new DoublyLinkedList<number>();
