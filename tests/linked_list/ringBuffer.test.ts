@@ -1,6 +1,7 @@
-import { describe, test, expect, jest, it } from "bun:test";
+import { describe, expect, it, jest, test } from "bun:test";
 
 import { RingBuffer } from "@/libs/linkedList/ringBuffer";
+import { RingBufferFullError } from "@/libs/linkedList/exceptions";
 
 describe("ring buffer test", () => {
 	test("isEmpty", () => {
@@ -27,4 +28,20 @@ describe("ring buffer test", () => {
 		ringBuffer.write(1);
 		expect(ringBuffer.read()).toBe(1);
 	});
+
+	it("write full -> read -> return 1st index", () => {
+		const ringBuffer = new RingBuffer<number>(5);
+
+		ringBuffer.write(1);
+		ringBuffer.write(2);
+		ringBuffer.write(3);
+		ringBuffer.write(4);
+		ringBuffer.write(5);
+		expect(ringBuffer.read()).toBe(1);
+
+		ringBuffer.write(6);
+		expect(ringBuffer.toString()).toBe("[6, 2, 3, 4, 5]");
+	});
+
+	// TODO: write test for throw error case
 });

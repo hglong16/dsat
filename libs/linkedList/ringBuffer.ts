@@ -1,3 +1,5 @@
+import { RingBufferFullError } from "./exceptions";
+
 class RingBuffer<T> {
 	private _list: Array<T | undefined>;
 	private _size = 0;
@@ -18,7 +20,7 @@ class RingBuffer<T> {
 
 	write(element: T): void {
 		if (this.isFull) {
-			throw new Error("RingBuffer is full");
+			throw new RingBufferFullError();
 		}
 
 		this._list[this._writeIndex] = element;
@@ -40,7 +42,19 @@ class RingBuffer<T> {
 	}
 
 	toString(): string {
-		throw new Error("Not implemented");
+		let s = "[";
+		for (let i = 0; i < this._list.length; i++) {
+			if (this._list[i] === undefined) {
+				s += "empty";
+			} else {
+				s += this._list[i];
+			}
+			if (i < this._list.length - 1) {
+				s += ", ";
+			}
+		}
+		s += "]";
+		return s;
 	}
 }
 
