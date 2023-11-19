@@ -1,7 +1,7 @@
 import { describe, expect, it, jest, test } from "bun:test";
 
-import { RingBuffer } from "@/libs/linkedList/ringBuffer";
 import { RingBufferFullError } from "@/libs/linkedList/exceptions";
+import { RingBuffer } from "@/libs/linkedList/ringBuffer";
 
 describe("ring buffer test", () => {
 	test("isEmpty", () => {
